@@ -1,0 +1,8 @@
+#game-canvas {
+  border: 3px solid #ccc;
+  width: 300;
+  height: 550;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  // image-rendering: -moz-crisp-edges;
+}
