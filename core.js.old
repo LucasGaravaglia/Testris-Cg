@@ -1,0 +1,182 @@
+const lines = 20;
+const columns = 10;
+const squareSize = 24;
+
+const width = columns * squareSize;
+const height = lines * squareSize;
+
+const canvas = document.querySelector("canvas");
+const context = canvas.getContext("2d");
+let currentShape = 6;
+let nextShape = 1;
+
+let gravity = 500;
+let movRow = 0;
+let movCol = parseInt(columns / 2);
+
+//0 - 6
+const formats = [
+  {
+    f: [
+      [1, 1, 1, 1],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ],
+    color: "#f0f",
+  },
+  {
+    f: [
+      [0, 1, 1],
+      [1, 1, 0],
+      [0, 0, 0],
+    ],
+    color: "#ff0",
+  },
+
+  {
+    f: [
+      [1, 1, 0],
+      [0, 1, 1],
+      [0, 0, 0],
+    ],
+    color: "#0f0",
+  },
+
+  {
+    f: [
+      [1, 1],
+      [1, 1],
+    ],
+    color: "#00f",
+  },
+
+  {
+    f: [
+      [0, 0, 1],
+      [1, 1, 1],
+      [0, 0, 0],
+    ],
+    color: "#009",
+  },
+
+  {
+    f: [
+      [1, 0, 0],
+      [1, 1, 1],
+      [0, 0, 0],
+    ],
+    color: "#f00",
+  },
+
+  {
+    f: [
+      [1, 1, 1],
+      [0, 1, 0],
+      [0, 0, 0],
+    ],
+    color: "#900",
+  },
+];
+
+let squares = [...Array(columns)].map(() => [...Array(lines)]);
+
+for (let i = 0; i < columns; i++) {
+  for (let j = 0; j < lines; j++) {
+    squares[i][j] = { filled: 0, color: "#fff" };
+  }
+}
+
+const drawSquare = (x, y, _color) => {
+  context.fillStyle = _color;
+  context.fillRect(x, y, squareSize, squareSize);
+};
+
+const drawGrid = () => {
+  context.strokeStyle = "#ccc";
+  context.beginPath();
+  for (let i = 1; i < lines; i++) {
+    context.moveTo(1, squareSize * i);
+    context.lineTo(width, squareSize * i);
+  }
+  for (let j = 1; j < columns; j++) {
+    context.moveTo(squareSize * j, 1);
+    context.lineTo(squareSize * j, height);
+  }
+  context.stroke();
+};
+
+const drawBorder = () => {
+  context.strokeStyle = "#444";
+  context.strokeRect(1, 1, width, height);
+};
+
+// const newTetramino = (x = 0, y = 0, clear = false) => {
+//   if (!clear)
+//     for (let i = 0; i < formats[currentShape].f.length; i++)
+//       for (let j = 0; j < formats[currentShape].f.length; j++)
+//         if (formats[currentShape].f[i][j] == 1)
+//           if (squares[x + i][y + j].filled == 1) {
+//             movRow = lines + 1;
+//             return;
+//           }
+//   for (let i = 0; i < formats[currentShape].f.length; i++) {
+//     for (let j = 0; j < formats[currentShape].f.length; j++) {
+//       if (formats[currentShape].f[i][j]) {
+//         if (clear) squares[i + x][j + y] = { filled: 0, color: "#fff" };
+//         else
+//           squares[i + x][j + y] = {
+//             filled: 1,
+//             color: formats[currentShape].color,
+//           };
+//       }
+//     }
+//   }
+// };
+
+// const runFrame = () => {
+// if (formats[currentShape].f.length + movRow + 1 <= lines) {
+//   if (movRow != -1) newTetramino(0, movRow, true);
+//   newTetramino(movCol, movRow + 1);
+//   movRow++;
+// } else {
+//   currentShape = nextShape;
+//   nextShape = Math.floor(Math.random() * formats.length);
+//   movRow = 0;
+// }
+// };
+
+const resetFrame = () => {
+  for (let i = 0; i < columns; i++)
+    for (let j = 0; j < lines; j++)
+      drawSquare(i * squareSize, j * squareSize, squares[i][j].color);
+};
+
+const gameLoop = async () => {
+  // runFrame();
+  // resetFrame();
+  drawGrid();
+  drawBorder();
+  await sleep(gravity);
+  requestAnimationFrame(gameLoop);
+};
+
+window.addEventListener("keydown", (event) => {
+  if (event.keyCode == 37) {
+    if (movCol - 1 >= 0) {
+      movCol--;
+    }
+  } else if (event.keyCode == 38) console.log("Rotation");
+  else if (event.keyCode == 39) {
+    if (movCol + 1 <= columns) {
+      movCol++;
+    }
+  }
+  // else if (event.keyCode == 40) currentShape.moveBottom();
+});
+
+gameLoop();
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
