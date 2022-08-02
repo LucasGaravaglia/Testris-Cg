@@ -55,10 +55,10 @@ export default class Piece {
       this.size = 3;
     } else if (type == 8) {
       this.shape = [
-        [0, 0, 0, 0],
-        [type, type, type, type],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
+        [0, type, 0, 0],
+        [0, type, 0, 0],
+        [0, type, 0, 0],
+        [0, type, 0, 0],
       ];
       this.size = 4;
     }
@@ -115,7 +115,7 @@ export default class Piece {
       for (let j = 0; j < this.size; j++) {
         if (gameScreen.grid[this.y][this.x] != 0 && this.shape[i][j] != 0)
           return 0;
-        if (this.shape[i][j] != 0 && this.x - 1 + j < 0) return 0;
+        if (this.shape[i][j] != 0 && this.x - 1 - j < 0 - j) return 0;
       }
 
     this.x--;

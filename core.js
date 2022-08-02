@@ -14,6 +14,7 @@ import Piece from "./piece.js";
 let nGravity = gravity;
 
 const randomPiece = () => {
+  return 2;
   return Math.floor(Math.random() * 8) + 1;
 };
 

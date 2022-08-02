@@ -25,9 +25,9 @@ export default class GameScreen {
       for (let j = 0; j < columns; j++) {
         this.grid[removeLines[i]][j] = 0;
       }
-      for (let z = rows - 1; z > 0; z--) {
+      for (let z = removeLines[i]; z > 0; z--) {
         for (let j = 0; j < columns; j++) {
-          if (z - 1 >= 0) this.grid[z][j] = this.grid[z - 1][j];
+          if (z > 0) this.grid[z][j] = this.grid[z - 1][j];
         }
       }
     }
@@ -56,6 +56,9 @@ export default class GameScreen {
           ctx.fillStyle = "#fff";
           ctx.fillRect(j * 20 + 1, i * 20 + 1, 20 - 1, 20 - 1);
         }
+        ctx.fillStyle = "#333";
+        ctx.font = "18px Arial";
+        ctx.fillText(this.grid[i][j], j * 20, (i + 1) * 20);
       }
     }
   }
