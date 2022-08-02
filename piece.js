@@ -61,15 +61,28 @@ export default class Piece {
         [0, type, 0, 0],
       ];
       this.size = 4;
+      this.flag = true;
     }
   }
 
   rotate(gameScreen) {
     let copy = [...Array(this.size)].map(() => [...Array(this.size)]);
-
-    for (let i = 0; i < this.size; i++)
-      for (let j = 0; j < this.size; j++)
-        copy[j][this.size - 1 - i] = this.shape[i][j];
+    if (this.type == 8) {
+      if (this.flag) {
+        this.flag = false;
+        for (let i = 0; i < this.size; i++)
+          for (let j = 0; j < this.size; j++)
+            copy[j][this.size - 1 - i] = this.shape[i][j];
+      } else {
+        this.flag = true;
+        for (let i = 0; i < this.size; i++)
+          for (let j = 0; j < this.size; j++)
+            copy[this.size - 1 - j][i] = this.shape[i][j];
+      }
+    } else
+      for (let i = 0; i < this.size; i++)
+        for (let j = 0; j < this.size; j++)
+          copy[j][this.size - 1 - i] = this.shape[i][j];
 
     for (let i = 0; i < this.size; i++)
       for (let j = 0; j < this.size; j++)
@@ -103,19 +116,24 @@ export default class Piece {
     for (let i = 0; i < this.size; i++)
       for (let j = 0; j < this.size; j++) {
         if (this.shape[i][j] != 0 && this.x + 1 + j >= columns) return 0;
-        if (gameScreen.grid[this.y][this.x] != 0 && this.shape[i][j] != 0)
+        if (
+          this.x >= 0 &&
+          gameScreen.grid[this.y][this.x] != 0 &&
+          this.shape[i][j] != 0
+        )
           return 0;
       }
-
     this.x++;
     return 1;
   }
+
   left(gameScreen) {
     for (let i = 0; i < this.size; i++)
       for (let j = 0; j < this.size; j++) {
         if (gameScreen.grid[this.y][this.x] != 0 && this.shape[i][j] != 0)
           return 0;
-        if (this.shape[i][j] != 0 && this.x - 1 - j < 0 - j) return 0;
+        console.log(this.x, this.y);
+        if (this.shape[i][j] != 0 && this.x - 1 + j < 0) return 0;
       }
 
     this.x--;
