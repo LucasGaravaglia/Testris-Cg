@@ -164,7 +164,6 @@ class Game:
         self.canvas = Canvas(self.window, width=largura, height=altura, bg='black')
         self.canvas.pack()
         self.p = Peca( 3, 1, randomPeca())
-        self.nump = 0
         self.t = Tela()
 
 
