@@ -1,13 +1,32 @@
-import { height, width, gravity, canvas, context, sleep } from "./config.js";
+import {
+  height,
+  width,
+  gravity,
+  canvas,
+  context,
+  sleep,
+  columns,
+  rows,
+} from "./config.js";
 import GameScreen from "./gameScreen.js";
 import Piece from "./piece.js";
 
 let nGravity = gravity;
 
 const randomPiece = () => {
-  return 4;
   return Math.floor(Math.random() * 8) + 1;
 };
+
+// const randomEffect = () => {
+//   let y = Math.floor(Math.random() * columns);
+//   let x = Math.floor(Math.random() * rows);
+//   if (gameScreen.grid[y][x] != 0) {
+//     randomEffect();
+//     return;
+//   }
+//   context.fillStyle = "#f0f";
+//   context.fillRect(y * 20, x * 20, 20, 20);
+// };
 
 window.addEventListener("keydown", (event) => {
   if (event.keyCode == 37) {
@@ -52,6 +71,7 @@ const run = async () => {
         }
   }
   draw();
+  // randomEffect();
   await sleep(nGravity);
   requestAnimationFrame(run);
 };
