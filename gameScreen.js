@@ -46,19 +46,12 @@ export default class GameScreen {
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
         if (this.grid[i][j] != 0) {
-          ctx.fillStyle = "#000";
-          ctx.fillRect(j * 20, i * 20, 20, 20);
           ctx.fillStyle = colors[this.grid[i][j] - 1];
           ctx.fillRect(j * 20 + 1, i * 20 + 1, 20 - 1, 20 - 1);
         } else {
-          ctx.fillStyle = "#000";
-          ctx.fillRect(j * 20, i * 20, 20, 20);
           ctx.fillStyle = "#fff";
           ctx.fillRect(j * 20 + 1, i * 20 + 1, 20 - 1, 20 - 1);
         }
-        ctx.fillStyle = "#333";
-        ctx.font = "18px Arial";
-        ctx.fillText(this.grid[i][j], j * 20, (i + 1) * 20);
       }
     }
   }

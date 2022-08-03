@@ -85,13 +85,15 @@ export default class Piece {
           copy[j][this.size - 1 - i] = this.shape[i][j];
 
     for (let i = 0; i < this.size; i++)
-      for (let j = 0; j < this.size; j++)
+      for (let j = 0; j < this.size; j++) {
+        if (copy[i][j] > 0 && (this.y + i > columns || this.x + j > rows))
+          return 0;
         if (
-          copy[i][j] != 0 &&
-          (this.y + j >= rows || gameScreen.grid[this.y + i][this.x + j] != 0)
+          copy[i][j] > 0 &&
+          (this.y + j >= rows || gameScreen.grid[this.y + i][this.x + j] > 0)
         )
           return 0;
-
+      }
     for (let i = 0; i < this.size; i++)
       for (let j = 0; j < this.size; j++) this.shape[i][j] = copy[i][j];
 
@@ -102,24 +104,25 @@ export default class Piece {
     for (let i = 0; i < this.size; i++)
       for (let j = 0; j < this.size; j++) {
         if (
-          this.shape[i][j] != 0 &&
+          this.shape[i][j] > 0 &&
           this.y + i + 1 < rows &&
-          gameScreen.grid[this.y + i + 1][this.x + j] != 0
+          gameScreen.grid[this.y + i + 1][this.x + j] > 0
         )
           return 0;
-        if (this.shape[i][j] != 0 && this.y + i + 1 >= rows) return 0;
+        if (this.shape[i][j] > 0 && this.y + i + 1 >= rows) return 0;
       }
     this.y++;
+
     return 1;
   }
   right(gameScreen) {
     for (let i = 0; i < this.size; i++)
       for (let j = 0; j < this.size; j++) {
-        if (this.shape[i][j] != 0 && this.x + 1 + j >= columns) return 0;
+        if (this.shape[i][j] > 0 && this.x + 1 + j >= columns) return 0;
         if (
           this.x >= 0 &&
-          gameScreen.grid[this.y][this.x] != 0 &&
-          this.shape[i][j] != 0
+          gameScreen.grid[this.y][this.x] > 0 &&
+          this.shape[i][j] > 0
         )
           return 0;
       }
@@ -130,29 +133,36 @@ export default class Piece {
   left(gameScreen) {
     for (let i = 0; i < this.size; i++)
       for (let j = 0; j < this.size; j++) {
-        if (gameScreen.grid[this.y][this.x] != 0 && this.shape[i][j] != 0)
+        if (gameScreen.grid[this.y][this.x] > 0 && this.shape[i][j] > 0)
           return 0;
-        console.log(this.x, this.y);
-        if (this.shape[i][j] != 0 && this.x - 1 + j < 0) return 0;
+        if (this.shape[i][j] > 0 && this.x - 1 + j < 0) return 0;
       }
 
     this.x--;
     return 1;
   }
 
-  draw(ctx) {
+  draw(ctx, x = 0, y = 0) {
     for (let i = 0; i < this.size; i++) {
       for (let j = 0; j < this.size; j++) {
-        if (this.shape[i][j] != 0) {
-          ctx.fillStyle = "#000";
-          ctx.fillRect((this.x + j) * 20, (this.y + i) * 20, 20, 20);
-          ctx.fillStyle = colors[this.shape[i][j] - 1];
-          ctx.fillRect(
-            (this.x + j) * 20 + 1,
-            (this.y + i) * 20 + 1,
-            20 - 1,
-            20 - 1
-          );
+        if (this.shape[i][j] > 0) {
+          if (x + y <= 0) {
+            ctx.fillStyle = colors[this.shape[i][j] - 1];
+            ctx.fillRect(
+              (this.x + j) * 20 + 1,
+              (this.y + i) * 20 + 1,
+              20 - 1,
+              20 - 1
+            );
+          } else {
+            ctx.fillStyle = colors[this.shape[i][j] - 1];
+            ctx.fillRect(
+              x + ((this.x + j) * 20 + 1),
+              y + ((this.y + i) * 20 + 1),
+              20 - 1,
+              20 - 1
+            );
+          }
         }
       }
     }

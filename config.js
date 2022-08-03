@@ -6,7 +6,6 @@ export const width = size * columns;
 export var gravity = 400;
 export const canvas = document.querySelector("canvas");
 export const context = canvas.getContext("2d");
-
 export const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
