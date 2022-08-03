@@ -116,6 +116,7 @@ export default class Piece {
 
     return 1;
   }
+
   right(gameScreen) {
     for (let i = 0; i < this.size; i++)
       for (let j = 0; j < this.size; j++) {

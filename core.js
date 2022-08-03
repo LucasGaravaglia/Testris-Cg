@@ -11,7 +11,7 @@ import GameScreen from "./gameScreen.js";
 import Piece from "./piece.js";
 
 let nGravity = gravity;
-let effectData = { x: 0, y: 0, color: "#000", count: 0, effect: -1 };
+let effectData = { x: 0, y: 0, color: "#000", count: 0, effect: 1 };
 let rank = 0;
 let initTimeStamp = new Date().getTime();
 
@@ -38,7 +38,6 @@ const randomEffect = () => {
     return;
   }
   effectData.color = generateColor();
-  effectData.effect = 1;
   gameScreen.grid[effectData.y][effectData.x] = effectData.effect;
 };
 
@@ -113,6 +112,7 @@ const run = async () => {
     gameScreen.AddPiece(piece);
     removeLines = gameScreen.getRemoveLives();
     if (removeLines.length > 0) {
+      gameScreen.grid[effectData.y][effectData.x] = 0;
       rank += removeLines.length;
       gameScreen.dropLine(removeLines);
       randomEffect();
@@ -126,7 +126,7 @@ const run = async () => {
           piece.shape[i][j] > 0 &&
           gameScreen.grid[piece.y + i][piece.x + j] > 0
         ) {
-          window.confirm("Game Over");
+          window.alert("Game Over");
           await sleep(1000);
           window.location.reload();
         }
