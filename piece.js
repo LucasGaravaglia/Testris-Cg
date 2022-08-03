@@ -86,7 +86,7 @@ export default class Piece {
 
     for (let i = 0; i < this.size; i++)
       for (let j = 0; j < this.size; j++) {
-        if (copy[i][j] > 0 && (this.y + i > columns || this.x + j > rows))
+        if (copy[i][j] > 0 && (this.y + i > rows || this.x + j > columns))
           return 0;
         if (
           copy[i][j] > 0 &&
@@ -94,6 +94,7 @@ export default class Piece {
         )
           return 0;
       }
+
     for (let i = 0; i < this.size; i++)
       for (let j = 0; j < this.size; j++) this.shape[i][j] = copy[i][j];
 
