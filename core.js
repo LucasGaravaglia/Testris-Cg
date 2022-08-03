@@ -31,8 +31,8 @@ const randomPiece = () => {
 const randomEffect = () => {
   effectData.count = 0;
   gameScreen.grid[effectData.y][effectData.x] = 0;
-  effectData.y = Math.floor(Math.random() * rows);
-  effectData.x = Math.floor(Math.random() * columns);
+  effectData.y = Math.floor(Math.random() * (rows - 4) + 4);
+  effectData.x = Math.floor(Math.random() * (columns - 4) + 4);
   if (gameScreen.grid[effectData.y][effectData.x] != 0) {
     randomEffect();
     return;
@@ -126,7 +126,9 @@ const run = async () => {
           piece.shape[i][j] > 0 &&
           gameScreen.grid[piece.y + i][piece.x + j] > 0
         ) {
-          return window.confirm("Game Over");
+          window.confirm("Game Over");
+          await sleep(1000);
+          window.location.reload();
         }
   }
   draw();
